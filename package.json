@@ -1,0 +1,29 @@
+{
+  "name": "webpack-demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack --bail --progress --profile",
+    "server": "webpack-dev-server --history-api-fallback --inline --progress",
+    "start": "npm run server"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-core": "^6.16.0",
+    "babel-preset-es2015": "^6.16.0",
+    "css-loader": "^0.25.0",
+    "file-loader": "^0.9.0",
+    "style-loader": "^0.13.1",
+    "url-loader": "^0.5.7",
+    "webpack": "^1.13.2"
+  },
+  "dependencies": {
+    "angular": "^1.5.8",
+    "babel-loader": "^6.2.5",
+    "babel-polyfill": "^6.16.0",
+    "bootstrap": "^3.3.7",
+    "webpack-dev-server": "^1.16.1"
+  }
+}
