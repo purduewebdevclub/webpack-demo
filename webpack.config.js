@@ -5,11 +5,8 @@ module.exports = {
         filename: 'bundle.js'
     },
     module: {
-        loaders: [{
-            test: /\.js$/,
-            exclude: /node_modules/,
-            loader: 'babel-loader'
-        },
+        loaders: [
+            { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader'},
             { test: /\.css$/, loader: "style-loader!css-loader" },
             { test: /bootstrap\/js\//, loader: 'imports?jQuery=jquery' },
             { test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=application/font-woff'},
