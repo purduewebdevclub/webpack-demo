@@ -9,6 +9,7 @@ module.exports = function (env) {
             path: path.resolve('dist'),
             filename: '[name].[hash].js',
             chunkFilename: '[id].[hash].chunk.js',
+            publicPath: '/',
             sourceMapFilename: '[name].[chunkhash].bundle.map',
         },
         resolve: {
@@ -16,7 +17,21 @@ module.exports = function (env) {
         },
         module: {
             rules: [
-                { test: /\.ts$/, exclude: 'node_modules', loader: 'awesome-typescript-loader' },
+                {
+                    test: /\.ts$/,
+                    exclude: 'node_modules',
+                    use: [{loader: 'awesome-typescript-loader'}, {loader: 'angular2-template-loader'}]
+                },
+                { 
+                    test: /\.html$/,
+                    loader: 'raw-loader',
+                    exclude: /\.async\.(html|css)$/
+                },
+                /* Async loading. */
+                {
+                    test: /\.async\.(html|css)$/,
+                    loaders: ['file?name=[name].[hash].[ext]', 'extract']
+                },
                 { test: /\.css$/, loader: "style-loader!css-loader" },
                 { test: /bootstrap\/js\//, loader: 'imports?jQuery=jquery' },
                 { test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=application/font-woff' },
@@ -27,25 +42,14 @@ module.exports = function (env) {
         },
         plugins: [
             //new webpack.NoEmitOnErrorsPlugin(),
-            
             new webpack.optimize.CommonsChunkPlugin({
-                name: 'polyfills',
-                chunks: ['polyfills']
-            }),
-            // This enables tree shaking of the vendor modules
-            new webpack.optimize.CommonsChunkPlugin({
-                name: 'vendor',
-                chunks: ['app'],
-                minChunks: module => /node_modules/.test(module.resource)
-            }),
-            // Specify the correct order the scripts will be injected in
-            new webpack.optimize.CommonsChunkPlugin({
-                name: ['polyfills', 'vendor'].reverse()
+                name: ['app', 'polyfills']
+                //minChunks: module => /node_modules/.test(module.resource)
             }),
             new webpack.ContextReplacementPlugin(
                 // The (\\|\/) piece accounts for path separators in *nix and Windows
                 /angular(\\|\/)core(\\|\/)(esm(\\|\/)src|src)(\\|\/)linker/,
-                path.resolve('./src'), // location of your src
+                path.resolve('src'), // location of your src
                 {} // a map of your routes
             ),
             new HtmlWebpackPlugin({
